@@ -1,8 +1,9 @@
 ---
-title: "Exercise #3"
-subtitle: "Fortgeschrittene Statistische Software für NF - SS 2022/23"
+title: 'Exercise #3'
 author: "Oleg Tolochko (12552516), Tobias Anzinger (12615518)"
 date: "`r Sys.Date()`"
+output: pdf_document
+subtitle: "Fortgeschrittene Statistische Software für NF - SS 2022/23"
 ---
 
 
@@ -30,6 +31,8 @@ Github repository: https://github.com/TobiasAnzinger/exeRcise-sheet-3
 ```{r message=FALSE, warning=FALSE}
 # load data
 library(readr)
+library(dplyr)
+library(knitr)
 first_names_2021 <- read_csv("vornamen_2021.csv")
 first_names_2022 <- read_csv("open_data_portal_2022.csv")
 head(first_names_2021)
@@ -40,7 +43,7 @@ head(first_names_2021)
 class(first_names_2021$Anzahl)
 class(first_names_2022$Anzahl)
 # The colum "Anzahl" is has the type character.
-# it looks like for everyname which has 4 or less ocurrences the table doesn't 
+# It looks like for every name which has 4 or less ocurrences the table doesn't 
 # specify a exact number but instead "4 oder weniger". Because it is ok that some
 # of the counts are inaccurate we just convert "4 oder weniger" to a 4 and 
 # convert the colum to a numeric.
@@ -52,7 +55,21 @@ first_names_2022$Anzahl <- as.numeric(first_names_2022$Anzahl)
 
 ### c)
 
-In 2021 there were `r sprintf("%1.0f", sum(first_names_2021$Anzahl), 0)` babies born which is more than the `r sprintf("%1.0f", sum(first_names_2022$Anzahl), 0)` babies in 2022.
+
+```{r message=FALSE, warning=FALSE}
+less_than_four_count_2021 <- first_names_2021 %>% filter(first_names_2021$Anzahl == 4) %>% count()
+less_than_four_count_2022 <- first_names_2022 %>% filter(first_names_2022$Anzahl == 4) %>% count()
+
+minimum_births_2021 <- sum(first_names_2021$Anzahl) - less_than_four_count_2021 * 3
+minimum_births_2022 <- sum(first_names_2022$Anzahl) - less_than_four_count_2022 * 3
+
+maximum_births_2021 <- sum(first_names_2021$Anzahl)
+maximum_births_2022 <- sum(first_names_2022$Anzahl)
+```
+
+In 2021 there were between `r sprintf("%1.0f", minimum_births_2021, 0)` and `r sprintf("%1.0f", maximum_births_2021, 0)` babies born.
+In 2022 between `r sprintf("%1.0f", minimum_births_2022, 0)` and `r sprintf("%1.0f", maximum_births_2022, 0)`.
+Because both the minimum and maximum is bigger in 2021 we expect that there were more babies born in 2021, but there is a possibility that there were more births in 2021 because we don´t know how often the names with a count of less than 5 occurred.
 
 
 ### d)
@@ -65,17 +82,14 @@ first_names_2022$Year <- 2022
 ### e)
 
 ```{r message=FALSE, warning=FALSE}
-library(dplyr)
 first_names_both_years <- bind_rows(first_names_2021, first_names_2022)
 ```
-Combine both datasets into one using `bind_rows()`.
 
 ### f)
 
 ```{r message=FALSE, warning=FALSE}
-library(knitr)
 grouped_by_name <- first_names_both_years %>% group_by(Vorname) %>% mutate(Anzahl = sum(Anzahl)) %>% arrange(desc(Anzahl)) %>% select(-Year) %>% distinct()
-kable(head(grouped_by_name, 10), caption = "Most popular first names in Munich (2021-2022)")
+kable(head(grouped_by_name, 10), caption = "Top 10 popular first names in Munich for babies (2021-2022)")
 ```
 
 
@@ -142,7 +156,7 @@ row_means
 
 Prompt:
 
-Please explain the rapply()  function from the R base package to me.
+Please explain the rapply() function from the R base package to me.
 
 
 Answer:
@@ -163,10 +177,10 @@ The rapply() function works by traversing through the nested structure of the ob
 
 Here's an example to illustrate the usage of rapply():
 
-# Create a nested list
+### Create a nested list
 my_list <- list(a = 1, b = list(c = 2, d = 3), e = list(f = list(g = 4, h = 5)))
 
-# Define a function to square numeric values
+### Define a function to square numeric values
 square <- function(x) {
   if (is.numeric(x)) {
     x^2
@@ -175,7 +189,7 @@ square <- function(x) {
   }
 }
 
-# Apply the square function to numeric elements in the list
+### Apply the square function to numeric elements in the list
 result <- rapply(my_list, square, classes = "numeric")
 
 print(result)
