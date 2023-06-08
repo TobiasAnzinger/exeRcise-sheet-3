@@ -76,8 +76,66 @@ kable(head(grouped_by_name, 10), caption = "Most popular first names in Munich (
 
 ## Exercise 4: Chat GPT + apply (3 points)
 
-For this task: Specifically use ChatGPT to solve the task and submit
-your prompts in addition to the solution
+### a)
+
+The prompt:
+
+The code below does not work because the wrong apply function has
+    been used. Find out which apply function would be correct and why it
+    did not work. Correct the code. Also calculate the rowwise means.
+
+###Create a sample data frame
+
+tax_data \<- data.frame( Name = c("Munich GmbH", "ABC Inc.", "Backpacks
+1980", "Bavarian Circus"), Tax_2019 = c(5000, 4000, 6000, 3500),
+Tax_2020 = c(4800, 4200, 5800, 3700), Tax_2021 = c(5200, 3800, 5900,
+3400) )
+
+###Calculate column-wise means
+
+column_means \<- lapply(tax_data\[, -1\], 2, mean)
+
+column_means
+
+
+
+The answer:
+
+The incorrect apply function used in the code is lapply(). The lapply() function is used to apply a function to each element of a list or a vector. In this case, the intention is to calculate the column-wise means of the data frame, so a different apply function should be used.
+
+The correct apply function to calculate column-wise means in this case is sapply(). The sapply() function simplifies the output and returns a vector or matrix instead of a list.
+
+Here's the corrected code:
+
+```{r message=FALSE, warning=FALSE}
+# Create a sample data frame
+tax_data <- data.frame(
+  Name = c("Munich GmbH", "ABC Inc.", "Backpacks 1980", "Bavarian Circus"),
+  Tax_2019 = c(5000, 4000, 6000, 3500),
+  Tax_2020 = c(4800, 4200, 5800, 3700),
+  Tax_2021 = c(5200, 3800, 5900, 3400)
+)
+
+# Calculate column-wise means
+column_means <- sapply(tax_data[, -1], mean)
+
+column_means
+```
+
+This code will correctly calculate the column-wise means of the tax_data data frame. The resulting column_means vector will contain the mean values for each column (excluding the first column Name).
+
+To calculate the row-wise means, you can use the rowMeans() function. Here's an example of how to calculate row-wise means:
+
+```{r message=FALSE, warning=FALSE}
+# Calculate row-wise means
+row_means <- rowMeans(tax_data[, -1])
+
+row_means
+```
+
+
+
+
 
 a)  The code below does not work because the wrong apply function has
     been used. Find out which apply function would be correct and why it
