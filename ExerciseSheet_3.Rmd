@@ -65,9 +65,14 @@ first_names_both_years <- bind_rows(first_names_2021, first_names_2022)
 ```
 Combine both datasets into one using `bind_rows()`.
 
-f)  Combine the counts for same names to determine the most popular
-    names across both years. Print out the top 10 names in a nicely
-    formatted table for both years. Include a table caption.
+### f)
+
+```{r message=FALSE, warning=FALSE}
+library(knitr)
+grouped_by_name <- first_names_both_years %>% group_by(Vorname) %>% mutate(Anzahl = sum(Anzahl)) %>% arrange(desc(Anzahl)) %>% select(-Year) %>% distinct()
+kable(head(grouped_by_name, 10), caption = "Most popular first names in Munich (2021-2022)")
+```
+
 
 ## Exercise 4: Chat GPT + apply (3 points)
 
