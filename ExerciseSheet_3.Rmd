@@ -133,32 +133,50 @@ row_means <- rowMeans(tax_data[, -1])
 row_means
 ```
 
+### b)
+
+Prompt:
+
+Please explain the rapply()  function from the R base package to me.
 
 
+Answer:
+
+In R, the rapply() function is part of the base package and is used to recursively apply a function to elements of a list or nested lists. It stands for "recursive apply".
+
+The basic syntax of rapply() is as follows:
+
+rapply(object, f, classes = NULL, ...)
+
+where:
+
+object: The object (typically a list) on which the function will be applied.
+f: The function to be applied to the elements of object.
+classes: An optional character vector specifying the classes of elements to which the function should be applied. If not specified, the function will be applied to all elements.
+...: Additional arguments to be passed to the function f.
+The rapply() function works by traversing through the nested structure of the object and applying the function f to each element that matches the specified classes. It recursively applies the function to sub-elements until it reaches the lowest level of the structure.
+
+Here's an example to illustrate the usage of rapply():
+
+# Create a nested list
+my_list <- list(a = 1, b = list(c = 2, d = 3), e = list(f = list(g = 4, h = 5)))
+
+# Define a function to square numeric values
+square <- function(x) {
+  if (is.numeric(x)) {
+    x^2
+  } else {
+    x
+  }
+}
+
+# Apply the square function to numeric elements in the list
+result <- rapply(my_list, square, classes = "numeric")
+
+print(result)
+
+In this example, the rapply() function is used to apply the square() function to numeric elements in the my_list nested list. The square() function squares the numeric values and leaves non-numeric values unchanged. The resulting result will be a modified list with the squared numeric values.
+
+Note that rapply() is particularly useful when you have complex nested structures, such as lists of lists, and you want to apply a function to specific types of elements within the structure. It simplifies the process of recursively traversing and applying functions to nested elements.
 
 
-a)  The code below does not work because the wrong apply function has
-    been used. Find out which apply function would be correct and why it
-    did not work. Correct the code. Also calculate the rowwise means.
-
-###Create a sample data frame
-
-tax_data \<- data.frame( Name = c("Munich GmbH", "ABC Inc.", "Backpacks
-1980", "Bavarian Circus"), Tax_2019 = c(5000, 4000, 6000, 3500),
-Tax_2020 = c(4800, 4200, 5800, 3700), Tax_2021 = c(5200, 3800, 5900,
-3400) )
-
-###Calculate column-wise means
-
-column_means \<- lapply(tax_data\[, -1\], 2, mean)
-
-column_means
-
-b)  Using ChatGPT try to understand what the rapply() function does.
-    Create an easy example with mock data where the function is used and
-    explain it in your words.
-
-## Final Note
-
-Make sure to push all your commits and changes to GitHub before
-submittining the exercise sheet.
