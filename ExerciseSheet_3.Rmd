@@ -57,8 +57,10 @@ first_names_2022$Anzahl <- as.numeric(first_names_2022$Anzahl)
 
 
 ```{r message=FALSE, warning=FALSE}
-less_than_four_count_2021 <- first_names_2021 %>% filter(first_names_2021$Anzahl == 4) %>% count()
-less_than_four_count_2022 <- first_names_2022 %>% filter(first_names_2022$Anzahl == 4) %>% count()
+less_than_four_count_2021 <- first_names_2021 %>% 
+  filter(first_names_2021$Anzahl == 4) %>% count()
+less_than_four_count_2022 <- first_names_2022 %>% 
+  filter(first_names_2022$Anzahl == 4) %>% count()
 
 minimum_births_2021 <- sum(first_names_2021$Anzahl) - less_than_four_count_2021 * 3
 minimum_births_2022 <- sum(first_names_2022$Anzahl) - less_than_four_count_2022 * 3
@@ -88,11 +90,16 @@ first_names_both_years <- bind_rows(first_names_2021, first_names_2022)
 ### f)
 
 ```{r message=FALSE, warning=FALSE}
-grouped_by_name <- first_names_both_years %>% group_by(Vorname) %>% mutate(Anzahl = sum(Anzahl)) %>% arrange(desc(Anzahl)) %>% select(-Year) %>% distinct()
-kable(head(grouped_by_name, 10), caption = "Top 10 popular first names in Munich for babies (2021-2022)")
+grouped_by_name <- first_names_both_years %>% group_by(Vorname) %>% 
+  mutate(Anzahl = sum(Anzahl)) %>% arrange(desc(Anzahl)) %>% 
+  select(-Year) %>% distinct()
+kable(head(grouped_by_name, 10), 
+      caption = "Top 10 popular first names in Munich for babies (2021-2022)",
+  format    = "latex",
+  longtable = FALSE)
 ```
 
-
+\pagebreak
 ## Exercise 4: Chat GPT + apply (3 points)
 
 ### a)
@@ -105,14 +112,14 @@ The code below does not work because the wrong apply function has
 
 ###Create a sample data frame
 
-tax_data \<- data.frame( Name = c("Munich GmbH", "ABC Inc.", "Backpacks
+tax_data <- data.frame( Name = c("Munich GmbH", "ABC Inc.", "Backpacks
 1980", "Bavarian Circus"), Tax_2019 = c(5000, 4000, 6000, 3500),
 Tax_2020 = c(4800, 4200, 5800, 3700), Tax_2021 = c(5200, 3800, 5900,
 3400) )
 
 ###Calculate column-wise means
 
-column_means \<- lapply(tax_data\[, -1\], 2, mean)
+column_means <- lapply(tax_data, -1, 2, mean)
 
 column_means
 
