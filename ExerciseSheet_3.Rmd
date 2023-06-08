@@ -2,7 +2,9 @@
 title: 'Exercise #3'
 author: "Oleg Tolochko (12552516), Tobias Anzinger (12615518)"
 date: "`r Sys.Date()`"
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
 subtitle: "Fortgeschrittene Statistische Software für NF - SS 2022/23"
 ---
 
@@ -104,20 +106,20 @@ kable(head(grouped_by_name, 10),
 
 ### a)
 
-The prompt:
+### Prompt:
 
 The code below does not work because the wrong apply function has
     been used. Find out which apply function would be correct and why it
     did not work. Correct the code. Also calculate the rowwise means.
 
-###Create a sample data frame
+Create a sample data frame
 
 tax_data <- data.frame( Name = c("Munich GmbH", "ABC Inc.", "Backpacks
 1980", "Bavarian Circus"), Tax_2019 = c(5000, 4000, 6000, 3500),
 Tax_2020 = c(4800, 4200, 5800, 3700), Tax_2021 = c(5200, 3800, 5900,
 3400) )
 
-###Calculate column-wise means
+Calculate column-wise means
 
 column_means <- lapply(tax_data, -1, 2, mean)
 
@@ -125,7 +127,7 @@ column_means
 
 
 
-The answer:
+### Answer:
 
 The incorrect apply function used in the code is lapply(). The lapply() function is used to apply a function to each element of a list or a vector. In this case, the intention is to calculate the column-wise means of the data frame, so a different apply function should be used.
 
@@ -161,12 +163,12 @@ row_means
 
 ### b)
 
-Prompt:
+### Prompt:
 
 Please explain the rapply() function from the R base package to me.
 
 
-Answer:
+### Answer:
 
 In R, the rapply() function is part of the base package and is used to recursively apply a function to elements of a list or nested lists. It stands for "recursive apply".
 
@@ -184,10 +186,11 @@ The rapply() function works by traversing through the nested structure of the ob
 
 Here's an example to illustrate the usage of rapply():
 
-### Create a nested list
+Create a nested list
 my_list <- list(a = 1, b = list(c = 2, d = 3), e = list(f = list(g = 4, h = 5)))
 
-### Define a function to square numeric values
+Define a function to square numeric values
+
 square <- function(x) {
   if (is.numeric(x)) {
     x^2
@@ -196,7 +199,7 @@ square <- function(x) {
   }
 }
 
-### Apply the square function to numeric elements in the list
+Apply the square function to numeric elements in the list
 result <- rapply(my_list, square, classes = "numeric")
 
 print(result)
