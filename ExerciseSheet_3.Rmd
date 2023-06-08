@@ -20,11 +20,30 @@ Weaknesses of git:
 
 ## Exercise 3: Baby-Names in Munich (4.5 Points)
 
-b)  Load the data for both years into R. Check the type of the count
-    variable ("Anzahl") and look into the data to determine why it is
-    not numeric? Fix the problem in an appropriate manner, it is OK if
-    some of the counts are inaccurate because of this. Explain your
-    solution and the repercussions.
+### b)
+
+```{r message=FALSE, warning=FALSE}
+# load data
+library(readr)
+first_names_2021 <- read_csv("vornamen_2021.csv")
+first_names_2022 <- read_csv("open_data_portal_2022.csv")
+head(first_names_2021)
+```
+
+
+```{r message=FALSE, warning=FALSE}
+class(first_names_2021$Anzahl)
+class(first_names_2022$Anzahl)
+# The colum "Anzahl" is has the type character.
+# it looks like for everyname which has 4 or less ocurrences the table doesn't 
+# specify a exact number but instead "4 oder weniger". Because it is ok that some
+# of the counts are inaccurate we just convert "4 oder weniger" to a 4 and 
+# convert the colum to a numeric.
+first_names_2021$Anzahl <- gsub("4 oder weniger", "4", first_names_2021$Anzahl)
+first_names_2022$Anzahl <- gsub("4 oder weniger", "4", first_names_2022$Anzahl)
+first_names_2021$Anzahl <- as.numeric(first_names_2021$Anzahl)
+first_names_2022$Anzahl <- as.numeric(first_names_2022$Anzahl)
+```
 
 c)  Calculate the total number of babies born in Munich in 2022
     and 2021. Which year had the bigger baby-boom?
