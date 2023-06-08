@@ -18,7 +18,12 @@ Weaknesses of git:
   - large binary files (e.g. for game devellopment) are not handled very well by git (but there exists the extension git LFS to fix this)
   - git can be quite complicated for a new user
 
-## Exercise 3: Baby-Names in Munich (4.5 Points)
+
+## Exercise 2: Putting your Repository on GitHub 
+
+Github repository: https://github.com/TobiasAnzinger/exeRcise-sheet-3
+
+## Exercise 3: Baby-Names in Munich
 
 ### b)
 
